@@ -156,4 +156,37 @@ switch  (opcion){
 
 	System.out.println("+++++++++++++BYE BYE+++++++++++++++");
     }
+
+    /** Metodo para validar si el asiento en una funcion esta disponible
+*/
+private static String validaBoleto(coleccionFunciones cf,int numfuncion){
+	String asiento="";
+	Scanner valorIngresado=new Scanner(System.in);
+	int c=0;
+	String f="";
+	do{
+		System.out.print("\n Elige el asiento deseado para la funcion "+numfuncion+":  ");//solicitamos el asiento
+		asiento=valorIngresado.nextLine();
+		try{
+			f=asiento.substring(0,1);
+			c=Integer.parseInt(asiento.substring(1,2));
+		}
+		catch(Exception e) {
+			System.out.println("\n--->El asiento no existe<----");
+			continue;
+		}
+		System.out.println(f+c);
+		//el metodo elegirAsiento regresa la cadena correspondiente al asiento si estuvo disponible
+		if(cf.getFuncionI(numfuncion).elegirAsiento(f,c).equals(f+c)){
+			cf.getFuncionI(0).elegirAsiento(f,c);//se debe tambien asignar en maraton, ya que no  estara disponible ese asiento
+			break;
+		}
+		else if(cf.getFuncionI(numfuncion).elegirAsiento(f,c).equals("no"))
+			System.out.println("\n--->El asiento no existe<----");
+		else{
+			System.out.println("\n--->El asiento "+ f+c+" no esta disponible<----");
+		}
+	}while(!cf.getFuncionI(numfuncion).elegirAsiento(f,c).equals(f+c));
+	return asiento;//es la cadena con el asiento
+}
 }
