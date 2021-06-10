@@ -1,0 +1,3 @@
+instructivo.txt
+build/*
+!build/build.xml
