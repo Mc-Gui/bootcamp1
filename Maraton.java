@@ -16,6 +16,7 @@ public class Maraton{
 		String cargo="",tipoBoleto="",asiento="", repetir="n";
 		Scanner valorIngresado =new Scanner(System.in);
 		coleccionFunciones cf;
+    
 		todasFunciones[0]=new Funcion("Maraton", "10:00-02:00");
 		todasFunciones[1]=new Funcion(" El Seños de los Anillos;La comunidad del Anillo..........(F1)", "10:00-13:00");
 		todasFunciones[2]=new Funcion("El Seños de los Anillos;Las dos Torres..........(F2)", "13:15-16:15");
@@ -203,8 +204,59 @@ public class Maraton{
 						System.out.println("\n++++++Opcion no valida+++++++");
 					break;
 				}
-			}while (opcion>7);
-		}while	(repetir.equalsIgnoreCase("S"));
-	System.out.println("\n+++++++++++++BYE BYE+++++++++++++++");
-   }
- }
+
+				if(i==0)
+				System.out.println("No hay pelicuas disponibles de pues de las " +cargo);
+
+			System.out.println("\n Deseas realizar otra operacion s\\ n");
+			repetir=valorIngresado.nextLine();
+
+		break;
+		case 0:
+		break;
+		default :
+			System.out.println("Opcion no valida.......");
+			break;
+
+		}
+}while (opcion>7);
+
+	}while	(repetir.toUpperCase().equals("S"));
+
+	System.out.println("+++++++++++++BYE BYE+++++++++++++++");
+}
+
+   /** Metodo para validar si el asiento en una funcion esta disponible
+*/
+private static String validaBoleto(coleccionFunciones cf,int numfuncion){
+	String asiento="";
+	Scanner valorIngresado=new Scanner(System.in);
+	int c=0;
+	String f="";
+	do{
+		System.out.print("\n Elige el asiento deseado para la funcion "+numfuncion+":  ");//solicitamos el asiento
+		asiento=valorIngresado.nextLine();
+		try{
+			f=asiento.substring(0,1);
+			c=Integer.parseInt(asiento.substring(1,2));
+		}
+		catch(Exception e) {
+			System.out.println("\n--->El asiento no existe<----");
+			continue;
+		}
+		System.out.println(f+c);
+		//el metodo elegirAsiento regresa la cadena correspondiente al asiento si estuvo disponible
+		if(cf.getFuncionI(numfuncion).elegirAsiento(f,c).equals(f+c)){
+			cf.getFuncionI(0).elegirAsiento(f,c);//se debe tambien asignar en maraton, ya que no  estara disponible ese asiento
+			break;
+		}
+		else if(cf.getFuncionI(numfuncion).elegirAsiento(f,c).equals("no"))
+			System.out.println("\n--->El asiento no existe<----");
+		else{
+			System.out.println("\n--->El asiento "+ f+c+" no esta disponible<----");
+		}
+	}while(!cf.getFuncionI(numfuncion).elegirAsiento(f,c).equals(f+c));
+	return asiento;//es la cadena con el asiento
+}
+}
+
